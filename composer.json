@@ -1,0 +1,12 @@
+{
+  "name": "akmalfairuz/vnet",
+  "description": "TCP Socket library use PHP 8.0 with pthreads",
+  "type": "library",
+  "require": {
+    "php-64bit": "^7.4 || ^8.0",
+    "ext-pthreads": ">=3.1.7dev",
+    "pocketmine/snooze": "^0.1.0",
+    "ext-sockets": "*",
+    "ext-yaml": "*"
+  }
+}
