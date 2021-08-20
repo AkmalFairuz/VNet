@@ -36,6 +36,7 @@ class ServerSocket extends Socket{
     public function accept() {
         $client = socket_accept($this->socket);
         if($client !== false){
+            socket_set_nonblock($client);
             socket_getpeername($client, $ip, $port);
             if($this->whitelistEnable) {
                 if(!in_array($ip, $this->whitelist)) {
@@ -47,7 +48,6 @@ class ServerSocket extends Socket{
                 socket_close($client);
                 return;
             }
-            $this->logger->info("New connection from $ip/$port");
             $id = $this->nextClientId++;
             $this->clients[$id] = new ClientSocket($this, $id, $client, $ip, $port);
             $this->manager->pushThreadToMainPacket(chr(Server::PACKET_OPEN_SESSION) . Binary::writeInt($id) . Binary::writeInt(strlen($ip)) . $ip . Binary::writeInt($port));

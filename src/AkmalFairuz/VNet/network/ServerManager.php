@@ -77,7 +77,7 @@ class ServerManager{
                     $id = Binary::readInt(substr($buffer, 0, 4));
                     $client = $this->serverSocket->getClient($id);
                     if($client !== null) {
-                        $client->disconnect();
+                        $client->disconnect(Binary::readByte($buffer[4]));
                     }
                     break;
             }

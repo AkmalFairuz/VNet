@@ -34,8 +34,8 @@ class Session{
         unset($this->server->sessions[$this->id]);
     }
 
-    public function disconnect() {
-        $this->server->pushMainToThreadPacket(chr(Server::PACKET_CLOSE_SESSION) . Binary::writeInt($this->id));
+    public function disconnect(int $mode = STREAM_SHUT_RDWR) {
+        $this->server->pushMainToThreadPacket(chr(Server::PACKET_CLOSE_SESSION) . Binary::writeInt($this->id) . Binary::writeByte($mode));
     }
 
     public function handlePacket(string $packet) {

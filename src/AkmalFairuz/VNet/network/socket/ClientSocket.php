@@ -19,7 +19,7 @@ class ClientSocket extends Socket{
     /**
      * @throws SocketException
      */
-    public function write(string $buffer, ?int $length = 0) {
+    public function write(string $buffer, int $length = null) {
         $ret = @socket_write($this->socket, $buffer, $length);
         if($ret === false) {
             throw new SocketException("Unable to write socket " . socket_strerror(socket_last_error($this->socket)));
@@ -37,13 +37,9 @@ class ClientSocket extends Socket{
         return $ret;
     }
 
-    public function handleRaw(string $buffer) {
-
-    }
-
-    public function disconnect() {
+    public function disconnect(int $mode) {
         $this->setOption(SOL_SOCKET, SO_LINGER, ["l_onoff" => 1, "l_linger" => 1]);
-        $this->shutdown(1);
+        $this->shutdown($mode);
         $this->waitClose = true;
         $this->server->logger->debug(sprintf("Disconnecting %s/%d", $this->address, $this->port));
     }
